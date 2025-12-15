@@ -1,0 +1,37 @@
+node-auth-api/
+│
+├── src/
+│   ├── config/
+│   │   ├── database.js
+│   │   └── config.js
+│   │
+│   ├── models/
+│   │   └── User.js
+│   │
+│   ├── repositories/
+│   │   └── UserRepository.js
+│   │
+│   ├── controllers/
+│   │   ├── AuthController.js
+│   │   └── UserController.js
+│   │
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   └── userRoutes.js
+│   │
+│   ├── middlewares/
+│   │   └── authMiddleware.js
+│   │
+│   ├── app.js
+│   └── server.js
+│
+├── package.json
+└── .env
+
+npm init -y
+npm install express sequelize mysql2 bcryptjs jsonwebtoken cors dotenv
+npm install router
+npm install express
+npm install --save-dev nodemon
+npm run dev
+

@@ -1,0 +1,51 @@
+############################
+# OS & Editor files
+############################
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.log
+
+############################
+# Environment files
+############################
+.env
+.env.*
+!.env.example
+
+############################
+# Backend (Express.js)
+############################
+backend/node_modules/
+backend/dist/
+backend/build/
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+
+############################
+# Frontend (Vue.js + Vite)
+############################
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+############################
+# Package managers
+############################
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+
+############################
+# Coverage & cache
+############################
+coverage/
+.cache/

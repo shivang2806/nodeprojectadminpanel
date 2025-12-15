@@ -1,0 +1,12 @@
+<template>
+    <div>
+      <h2>User Dashboard</h2>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+    name: "UserDashboard",
+  };
+  </script>
+  

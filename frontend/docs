@@ -1,0 +1,32 @@
+vue-admin-panel/
+│
+├── src/
+│   ├── api/
+│   │   └── axios.js
+│   │
+│   ├── router/
+│   │   └── index.js
+│   │
+│   ├── views/
+│   │    ├── admin/
+│   │    │    ├── AdminDashboard.vue
+│   │    │    └── Users.vue
+│   │    │
+│   │    ├── user/
+│   │    │    └── UserDashboard.vue
+│   │    │
+│   │    components/
+│   │    ├── admin/
+│   │    │    ├── AdminSidebar.vue
+│   │    │    └── AdminNavbar.vue
+│   │    │
+│   │    └── user/
+│   │        ├── UserSidebar.vue
+│   │        └── UserNavbar.vue
+│   ├── App.vue
+│   └── main.js
+
+
+npm create vue@latest
+cd vue-admin-panel
+npm install axios bootstrap

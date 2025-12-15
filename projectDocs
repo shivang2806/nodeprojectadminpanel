@@ -1,0 +1,24 @@
+- node project
+-- admin panel userpanel ride booking using API, kafka,
+-- frontend Vue.js
+-- adminpanel create user list
+-- show overview & settings
+-- customer web can also book ride
+-- caption web can also accept ride
+-- ride history
+-- rider mark as online to show under 2 km of range
+
+- node project 
+-- video calling & chat
+-- queue, scheduler run in background
+-- show queue, scheduler in web live stream
+-- frontend Vue.js
+
+- both user can chat with each other - seperate microservice
+- scheduler, queuejob - seperate microservice
+- mongodb user activity logs - seperate microservice (optional)
+- basic report
+- monitering like grefana
+- code execution platform/compiler
+
+- docker container based
