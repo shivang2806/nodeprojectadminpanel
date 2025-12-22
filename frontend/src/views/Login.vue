@@ -21,7 +21,7 @@
     },
     methods: {
         async login() {
-            const res = await api.post("/auth/login", {
+            const res = await api.post("/api/auth/login", {
                 email: this.email,
                 password: this.password,
             });
@@ -29,7 +29,7 @@
             localStorage.setItem("token", res.data.token);
 
             // get user info
-            const user = (await api.get("/user/dashboard")).data;
+            const user = (await api.get("/api/user/dashboard")).data;
             localStorage.setItem("role", user.role);
 
             if (user.role === "admin") {

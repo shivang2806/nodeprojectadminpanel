@@ -22,7 +22,7 @@
       return { user: {} };
     },
     async mounted() {
-      const res = await api.get("/user/dashboard");
+      const res = await api.get("/api/user/dashboard");
       this.user = res.data;
     },
   };

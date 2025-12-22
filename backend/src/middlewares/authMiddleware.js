@@ -2,14 +2,20 @@ const jwt = require("jsonwebtoken");
 const UserRepository = require("../repositories/UserRepository");
 
 module.exports = async (req, res, next) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  const authHeader = req.headers.authorization;
 
-  if (!token) {
+  console.log("Auth Header:", authHeader);
+  console.log("JWT_SECRET:", process.env.JWT_SECRET);
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
+  const token = authHeader.split(" ")[1];
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
     const user = await UserRepository.findById(decoded.id);
 
     if (!user) {
@@ -18,7 +24,8 @@ module.exports = async (req, res, next) => {
 
     req.user = user;
     next();
-  } catch {
-    res.status(401).json({ message: "Invalid token" });
+  } catch (err) {
+    console.error("JWT Error:", err.message);
+    return res.status(401).json({ message: "Invalid token" });
   }
 };

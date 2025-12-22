@@ -62,7 +62,7 @@
       };
     },
     async mounted() {
-      this.admin = (await api.get("/user/dashboard")).data;
+      this.admin = (await api.get("/api/user/dashboard")).data;
       this.load();
     },
     methods: {
