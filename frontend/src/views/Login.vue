@@ -33,9 +33,11 @@
             localStorage.setItem("role", user.role);
 
             if (user.role === "admin") {
-                this.$router.push("/admin/dashboard");
-            } else {
-                this.$router.push("/customer/dashboard");
+              this.$router.push("/admin/dashboard");
+            } else if (user.role === "customer") {
+              this.$router.push("/customer/dashboard");
+            } else if (user.role === "caption") {
+              this.$router.push("/caption/dashboard");
             }
         }
 
