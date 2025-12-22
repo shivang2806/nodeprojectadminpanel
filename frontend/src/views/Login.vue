@@ -35,7 +35,7 @@
             if (user.role === "admin") {
                 this.$router.push("/admin/dashboard");
             } else {
-                this.$router.push("/user/dashboard");
+                this.$router.push("/customer/dashboard");
             }
         }
 

@@ -9,7 +9,7 @@ const routes = [
   { path: "/", component: Login },
   { path: "/admin/dashboard", component: AdminDashboard },
   { path: "/admin/users", component: Users },
-  { path: "/user/dashboard", component: UserDashboard },
+  { path: "/customer/dashboard", component: UserDashboard },
 ];
 
 export default createRouter({
