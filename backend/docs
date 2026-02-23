@@ -1,32 +1,43 @@
-node-auth-api/
+backend/src/
+├── config/
+│   ├── database.js         ← Sequelize (unchanged)
+│   ├── db.js               ← mysql2 pool (unchanged)
+│   ├── backup.js           ← DB backup (unchanged)
+│   └── scheduler.js        ← cron scheduler (unchanged)
 │
-├── src/
-│   ├── config/
-│   │   ├── database.js
-│   │   └── config.js
-│   │
-│   ├── models/
-│   │   └── User.js
-│   │
-│   ├── repositories/
-│   │   └── UserRepository.js
-│   │
-│   ├── controllers/
-│   │   ├── AuthController.js
-│   │   └── UserController.js
-│   │
-│   ├── routes/
-│   │   ├── authRoutes.js
-│   │   └── userRoutes.js
-│   │
-│   ├── middlewares/
-│   │   └── authMiddleware.js
-│   │
-│   ├── app.js
-│   └── server.js
+├── queues/
+│   └── JobQueue.js         ← MySQL queue class (NEW)
 │
-├── package.json
-└── .env
+├── workers/
+│   └── exportWorker.js     ← polls MySQL, processes jobs (NEW)
+│
+├── controllers/
+│   ├── AuthController.js
+│   ├── UserController.js
+│   ├── UserExcelController.js   ← updated (queue-based export)
+│   └── BackupController.js
+│
+├── routes/
+│   ├── authRoutes.js
+│   ├── userRoutes.js            ← 4 new export routes
+│   └── backupRoutes.js
+│
+├── middlewares/
+│   ├── authMiddleware.js
+│   └── roleMiddleware.js
+│
+├── models/
+│   └── User.js
+│
+├── repositories/
+│   └── UserRepository.js
+│
+├── app.js
+└── server.js
+
+exports/          ← generated Excel files stored here
+backups/          ← DB backups stored here
+uploads/          ← temp import uploads
 
 npm init -y
 npm install express sequelize mysql2 bcryptjs jsonwebtoken cors dotenv

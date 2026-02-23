@@ -18,8 +18,13 @@ router.post("/",          authMiddleware, roleMiddleware("admin"), UserControlle
 router.put("/:id",        authMiddleware, roleMiddleware("admin"), UserController.updateUser);
 router.delete("/:id",     authMiddleware, roleMiddleware("admin"), UserController.deleteUser);
 
-// ── Excel routes (admin only) ──
-router.get("/export",           authMiddleware, roleMiddleware("admin"), UserExcelController.exportUsers);
+// ── Excel export (queue-based) ──
+router.post("/export",                  authMiddleware, roleMiddleware("admin"), UserExcelController.exportUsers);
+router.get("/export/jobs",              authMiddleware, roleMiddleware("admin"), UserExcelController.listJobs);
+router.get("/export/status/:jobId",     authMiddleware, roleMiddleware("admin"), UserExcelController.exportStatus);
+router.get("/export/download/:jobId",   authMiddleware, roleMiddleware("admin"), UserExcelController.downloadExport);
+
+// ── Excel import ──
 router.get("/import-template",  authMiddleware, roleMiddleware("admin"), UserExcelController.downloadTemplate);
 router.post("/import",          authMiddleware, roleMiddleware("admin"), upload.single("file"), UserExcelController.importUsers);
 
