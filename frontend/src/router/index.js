@@ -1,6 +1,7 @@
 // ─── router/index.js ──────────────────────────────────────────────────────────
 import { createRouter, createWebHistory } from "vue-router";
 import { roleGuard } from "./guards";
+import Backup from "../views/admin/Backup.vue";
 
 import Login              from "../views/Login.vue";
 import AdminDashboard     from "../views/admin/Dashboard.vue";
@@ -30,6 +31,8 @@ const routes = [
   { path: "/:pathMatch(.*)*",     redirect: "/" },
 
   { path: "/admin/users/excel", component: UserExcel, beforeEnter: roleGuard(["admin"]) },
+
+  { path: "/admin/backup", component: Backup, beforeEnter: roleGuard(["admin"]) },
 
 ];
 

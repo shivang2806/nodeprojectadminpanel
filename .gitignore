@@ -49,3 +49,6 @@ pnpm-lock.yaml
 ############################
 coverage/
 .cache/
+
+backups/
+uploads/

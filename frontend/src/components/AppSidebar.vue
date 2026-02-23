@@ -24,6 +24,7 @@
       { to: "/admin/users",         icon: "bi bi-people",             label: "Users",           badge: null },
       { to: "/admin/users/excel",   icon: "bi bi-file-earmark-excel", label: "Import / Export" },
       { to: "/admin/chat",          icon: "bi bi-chat-dots",          label: "Chats",           badge: null },
+      { to: "/admin/backup",        icon: "bi bi-database",           label: "DB Backup" },
     ],
     customer: [
       { to: "/customer/dashboard", icon: "bi bi-house",     label: "Dashboard" },
