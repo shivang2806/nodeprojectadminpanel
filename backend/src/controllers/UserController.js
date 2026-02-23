@@ -16,6 +16,11 @@ class UserController {
     res.json(users);
   }
 
+  async chatListUsers(req, res) {
+    const users = await UserRepository.getAllExcept(req.user.id);
+    res.json(users);
+  };
+
   async createUser(req, res) {
     const { name, email, password, role } = req.body;
 

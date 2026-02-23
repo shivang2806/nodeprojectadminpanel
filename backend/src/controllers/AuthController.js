@@ -23,7 +23,7 @@ class AuthController {
       { expiresIn: "1d" }
     );
 
-    res.json({ token });
+    res.json({ token, role: user.role });  
   }
 }
 

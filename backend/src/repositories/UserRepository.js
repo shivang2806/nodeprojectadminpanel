@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const db = require("../config/db");
 
 class UserRepository {
   create(data) {
@@ -26,6 +27,15 @@ class UserRepository {
   delete(id) {
     return User.destroy({ where: { id } });
   }
+
+  async getAllExcept(userId) {
+    const [rows] = await db.query(
+      "SELECT id, name FROM users WHERE id != ?",
+      [userId]
+    );
+    return rows;
+  }
+
 }
 
 module.exports = new UserRepository();

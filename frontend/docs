@@ -1,32 +1,66 @@
-vue-admin-panel/
+# Frontend Structure
+
+```
+frontend/src/
+├── assets/
+│   └── styles/
+│       ├── main.css          ← global styles
+│       ├── sidebar.css       ← sidebar styles
+│       ├── header.css        ← header styles
+│       ├── dashboard.css     ← dashboard/stat card styles
+│       └── login.css         ← login page styles
 │
-├── src/
-│   ├── api/
-│   │   └── axios.js
-│   │
-│   ├── router/
-│   │   └── index.js
-│   │
-│   ├── views/
-│   │    ├── admin/
-│   │    │    ├── AdminDashboard.vue
-│   │    │    └── Users.vue
-│   │    │
-│   │    ├── user/
-│   │    │    └── UserDashboard.vue
-│   │    │
-│   │    components/
-│   │    ├── admin/
-│   │    │    ├── AdminSidebar.vue
-│   │    │    └── AdminNavbar.vue
-│   │    │
-│   │    └── user/
-│   │        ├── UserSidebar.vue
-│   │        └── UserNavbar.vue
-│   ├── App.vue
-│   └── main.js
+├── api/
+│   ├── axios.js              ← base axios instance + interceptor
+│   ├── authApi.js            ← login
+│   ├── userApi.js            ← user CRUD
+│   └── chatApi.js            ← chat/messages (port 4000)
+│
+├── router/
+│   ├── guards.js             ← roleGuard
+│   └── index.js              ← all routes
+│
+├── socket/
+│   └── socket.js             ← socket.io instance
+│
+├── components/
+│   ├── AppSidebar.vue        ← COMMON sidebar (role-aware)
+│   ├── AppHeader.vue         ← COMMON header (role-aware)
+│   └── StatCard.vue          ← reusable stat card
+│   └── chat/
+│       ├── ChatSidebar.vue
+│       ├── ChatWindow.vue
+│       └── ChatInput.vue
+│
+├── views/
+│   ├── Login.vue
+│   ├── admin/
+│   │   ├── Dashboard.vue
+│   │   └── Users.vue
+│   ├── caption/
+│   │   └── Dashboard.vue
+│   ├── customer/
+│   │   └── Dashboard.vue
+│   └── Chat.vue
+│
+├── App.vue
+└── main.js
+```
 
 
 npm create vue@latest
 cd vue-admin-panel
 npm install axios bootstrap
+
+
+Login
+  ↓
+Dashboard (based on role)
+  ↓
+Click "Chat"
+  ↓
+Role-based route (/admin/chat | /customer/chat | /caption/chat)
+  ↓
+Same Chat.vue
+  ↓
+Socket connects to chat-service

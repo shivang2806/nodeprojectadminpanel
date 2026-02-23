@@ -1,0 +1,31 @@
+📁 Chat Microservice Folder Structure
+
+chat-service/
+├── src/
+│   ├── config/
+│   │   ├── db.js
+│   │   └── socket.js
+│   │
+│   ├── controllers/
+│   │   └── ChatController.js
+│   │
+│   ├── middlewares/
+│   │   └── socketAuth.js
+│   │
+│   ├── models/
+│   │   ├── Chat.js
+│   │   └── Message.js
+│   │
+│   ├── repositories/
+│   │   ├── ChatRepository.js
+│   │   └── MessageRepository.js
+│   │
+│   ├── routes/
+│   │   └── chatRoutes.js
+│   │
+│   ├── app.js
+│   └── server.js
+│
+├── .env
+└── package.json
+

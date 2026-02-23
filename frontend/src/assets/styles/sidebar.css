@@ -1,0 +1,102 @@
+.sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    width: var(--sidebar-width);
+    background: var(--primary-color);
+    border-right: 1px solid var(--border-color);
+    box-shadow: var(--shadow-md);
+    padding: 1.5rem;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+  }
+  
+  .sidebar-logo-icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; color: #fff; font-weight: 700;
+  }
+  
+  .sidebar-logo-text {
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--text-primary); letter-spacing: -0.5px;
+  }
+  
+  .sidebar-menu { list-style: none; padding: 0; margin: 0; }
+  
+  .menu-section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem;
+    letter-spacing: 1px;
+    font-family: 'DM Mono', monospace;
+  }
+  
+  .menu-item { margin-bottom: 0.5rem; }
+  
+  .menu-link {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    position: relative; overflow: hidden;
+  }
+  
+  .menu-link::before {
+    content: '';
+    position: absolute; left: 0; top: 0;
+    height: 100%; width: 3px;
+    background: var(--accent-color);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .menu-link:hover {
+    background: var(--secondary-color);
+    color: var(--text-primary);
+    transform: translateX(4px);
+  }
+  
+  .menu-link:hover::before,
+  .menu-link.router-link-active::before {
+    transform: scaleY(1);
+  }
+  
+  .menu-link.router-link-active {
+    background: linear-gradient(90deg, rgba(245,158,11,0.1) 0%, rgba(245,158,11,0.05) 100%);
+    color: var(--accent-color);
+    font-weight: 600;
+  }
+  
+  .menu-link i { font-size: 1.25rem; width: 24px; }
+  
+  .menu-badge {
+    margin-left: auto;
+    background: var(--accent-color);
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.75rem; font-weight: 700;
+    font-family: 'DM Mono', monospace;
+  }
+  
+  @media (max-width: 992px) {
+    .sidebar { transform: translateX(-100%); }
+    .sidebar.active { transform: translateX(0); }
+  }

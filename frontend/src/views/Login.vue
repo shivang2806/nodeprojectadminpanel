@@ -1,47 +1,95 @@
 <template>
-    <div class="container mt-5" style="max-width: 400px">
-      <h3 class="text-center mb-3">Admin Login</h3>
+    <div class="login-page">
+      <div class="login-card">
+        <div class="login-logo">
+          <div class="login-logo-icon">D</div>
+          <span class="login-logo-text">DevTools</span>
+        </div>
   
-      <input v-model="email" class="form-control mb-2" placeholder="Email" />
-      <input v-model="password" type="password" class="form-control mb-3" placeholder="Password" />
+        <h2 class="login-title">Welcome back</h2>
+        <p class="login-subtitle">Sign in to your account to continue</p>
   
-      <button class="btn btn-primary w-100" @click="login">Login</button>
+        <div v-if="error" class="login-error">
+          <i class="bi bi-exclamation-circle me-2"></i>{{ error }}
+        </div>
+  
+        <div class="mb-3">
+          <label class="form-label">Email address</label>
+          <div class="input-wrapper">
+            <i class="bi bi-envelope"></i>
+            <input
+              v-model="email"
+              type="email"
+              class="form-control"
+              placeholder="you@company.com"
+              @keyup.enter="handleLogin"
+            />
+          </div>
+        </div>
+  
+        <div class="mb-4">
+          <label class="form-label">Password</label>
+          <div class="input-wrapper">
+            <i class="bi bi-lock"></i>
+            <input
+              v-model="password"
+              :type="showPass ? 'text' : 'password'"
+              class="form-control"
+              placeholder="••••••••"
+              @keyup.enter="handleLogin"
+              style="padding-right: 3rem;"
+            />
+            <i
+              :class="showPass ? 'bi bi-eye-slash' : 'bi bi-eye'"
+              style="left:auto;right:1rem;cursor:pointer;"
+              @click="showPass = !showPass"
+            ></i>
+          </div>
+        </div>
+  
+        <button class="btn-login" @click="handleLogin" :disabled="loading">
+          <span v-if="loading">
+            <span class="spinner-border spinner-border-sm me-2"></span>Signing in...
+          </span>
+          <span v-else>Sign In</span>
+        </button>
+      </div>
     </div>
   </template>
   
   <script>
-  import api from "../api/axios";
+  import { login } from "../api/authApi";
+  
+  const ROLE_ROUTES = {
+    admin:    "/admin/dashboard",
+    customer: "/customer/dashboard",
+    caption:  "/caption/dashboard",
+  };
   
   export default {
+    name: "Login",
     data() {
-      return {
-        email: "",
-        password: "",
-      };
+      return { email: "", password: "", error: "", loading: false, showPass: false };
     },
     methods: {
-        async login() {
-            const res = await api.post("/api/auth/login", {
-                email: this.email,
-                password: this.password,
-            });
-
-            localStorage.setItem("token", res.data.token);
-
-            // get user info
-            const user = (await api.get("/api/user/dashboard")).data;
-            localStorage.setItem("role", user.role);
-
-            if (user.role === "admin") {
-              this.$router.push("/admin/dashboard");
-            } else if (user.role === "customer") {
-              this.$router.push("/customer/dashboard");
-            } else if (user.role === "caption") {
-              this.$router.push("/caption/dashboard");
-            }
+      async handleLogin() {
+        this.error = "";
+        if (!this.email || !this.password) {
+          this.error = "Please enter your email and password.";
+          return;
         }
-
+        this.loading = true;
+        try {
+          const res = await login(this.email, this.password);
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("role",  res.data.role);
+          this.$router.push(ROLE_ROUTES[res.data.role] || "/");
+        } catch (err) {
+          this.error = err.response?.data?.message || "Login failed. Please try again.";
+        } finally {
+          this.loading = false;
+        }
+      },
     },
   };
   </script>
-  

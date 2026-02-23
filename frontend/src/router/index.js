@@ -1,20 +1,32 @@
+// ─── router/index.js ──────────────────────────────────────────────────────────
 import { createRouter, createWebHistory } from "vue-router";
+import { roleGuard } from "./guards";
 
-import Login from "../views/Login.vue";
-import AdminDashboard from "../views/admin/AdminDashboard.vue";
-import UserDashboard from "../views/user/UserDashboard.vue";
-import Users from "../views/admin/Users.vue";
-import CaptionDashboard from "../views/caption/CaptionDashboard.vue";
+import Login           from "../views/Login.vue";
+import AdminDashboard  from "../views/admin/Dashboard.vue";
+import AdminUsers      from "../views/admin/Users.vue";
+import CaptionDashboard from "../views/caption/Dashboard.vue";
+import CustomerDashboard from "../views/customer/Dashboard.vue";
+import Chat            from "../views/Chat.vue";
 
 const routes = [
-  { path: "/", component: Login },
-  { path: "/admin/dashboard", component: AdminDashboard },
-  { path: "/admin/users", component: Users },
-  { path: "/customer/dashboard", component: UserDashboard },
-  { path: "/caption/dashboard", component: CaptionDashboard }
+  { path: "/",                    component: Login },
+
+  // Admin
+  { path: "/admin/dashboard",     component: AdminDashboard,   beforeEnter: roleGuard(["admin"]) },
+  { path: "/admin/users",         component: AdminUsers,       beforeEnter: roleGuard(["admin"]) },
+  { path: "/admin/chat",          component: Chat,             beforeEnter: roleGuard(["admin"]) },
+
+  // Customer
+  { path: "/customer/dashboard",  component: CustomerDashboard, beforeEnter: roleGuard(["customer"]) },
+  { path: "/customer/chat",       component: Chat,              beforeEnter: roleGuard(["customer"]) },
+
+  // Caption
+  { path: "/caption/dashboard",   component: CaptionDashboard, beforeEnter: roleGuard(["caption"]) },
+  { path: "/caption/chat",        component: Chat,             beforeEnter: roleGuard(["caption"]) },
+
+  // Catch-all
+  { path: "/:pathMatch(.*)*",     redirect: "/" },
 ];
 
-export default createRouter({
-  history: createWebHistory(),
-  routes,
-});
+export default createRouter({ history: createWebHistory(), routes });
