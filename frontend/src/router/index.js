@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { roleGuard } from "./guards";
 import Backup from "../views/admin/Backup.vue";
 import PdfGenerator from "../views/admin/PdfGenerator.vue";
+import Monitor from "../views/admin/Monitor.vue";
 
 import Login              from "../views/Login.vue";
 import AdminDashboard     from "../views/admin/Dashboard.vue";
@@ -16,9 +17,13 @@ const routes = [
   { path: "/",                    component: Login },
 
   // Admin
-  { path: "/admin/dashboard",     component: AdminDashboard,   beforeEnter: roleGuard(["admin"]) },
-  { path: "/admin/users",         component: AdminUsers,       beforeEnter: roleGuard(["admin"]) },
-  { path: "/admin/chat",          component: Chat,             beforeEnter: roleGuard(["admin"]) },
+  { path: "/admin/dashboard",     component: AdminDashboard,    beforeEnter: roleGuard(["admin"]) },
+  { path: "/admin/users",         component: AdminUsers,        beforeEnter: roleGuard(["admin"]) },
+  { path: "/admin/chat",          component: Chat,              beforeEnter: roleGuard(["admin"]) },
+  { path: "/admin/monitor",       component: Monitor,           beforeEnter: roleGuard(["admin"]) },
+  { path: "/admin/users/excel",   component: UserExcel,         beforeEnter: roleGuard(["admin"]) },
+  { path: "/admin/backup",        component: Backup,            beforeEnter: roleGuard(["admin"]) },
+  { path: "/admin/pdf",           component: PdfGenerator,      beforeEnter: roleGuard(["admin"]) },
 
   // Customer
   { path: "/customer/dashboard",  component: CustomerDashboard, beforeEnter: roleGuard(["customer"]) },
@@ -31,11 +36,6 @@ const routes = [
   // Catch-all
   { path: "/:pathMatch(.*)*",     redirect: "/" },
 
-  { path: "/admin/users/excel", component: UserExcel, beforeEnter: roleGuard(["admin"]) },
-
-  { path: "/admin/backup", component: Backup, beforeEnter: roleGuard(["admin"]) },
-
-  { path: "/admin/pdf", component: PdfGenerator, beforeEnter: roleGuard(["admin"]) },
 
 ];
 

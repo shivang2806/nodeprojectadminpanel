@@ -1,7 +1,7 @@
 require("dotenv").config();
 const app = require("./app");
 const sequelize = require("./config/database");
-// const { startScheduler } = require("./config/scheduler");
+const { startScheduler } = require("./config/scheduler");
 const { startWorker } = require("./workers/exportWorker");
 
 const PORT = process.env.PORT || 3000;
@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
     console.log("Database connected");
 
     startWorker();      // ← start MySQL queue worker
-    // startScheduler();   // ← backup scheduler
+    startScheduler();   // ← backup scheduler
 
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

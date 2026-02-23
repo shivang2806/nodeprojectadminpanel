@@ -11,10 +11,22 @@ const User     = require("../models/User");
 const EXPORTS_DIR   = path.join(process.cwd(), "exports");
 const POLL_INTERVAL = 3000; // ms
 
+const QueueRegistry = require("../monitor/QueueRegistry");
+const ActivityLog   = require("../monitor/ActivityLog");
+
+// Register queue on startup
+QueueRegistry.register("excel-export", {
+  description: "Excel file export jobs for user data",
+});
+
 if (!fs.existsSync(EXPORTS_DIR)) fs.mkdirSync(EXPORTS_DIR, { recursive: true });
 
 // ── Process one job ────────────────────────────────────
 const processJob = async (job) => {
+  QueueRegistry.decrement("excel-export", "waiting");
+  QueueRegistry.increment("excel-export", "active");
+  ActivityLog.push("queue", `Export job #${job.id} started`, { queue: "excel-export", jobId: job.id, level: "info" });
+
   console.log(`⚙️  Processing export job #${job.id}`);
 
   try {
@@ -100,30 +112,54 @@ const processJob = async (job) => {
     await JobQueue.complete(job.id, { filename, filepath, totalRows: users.length });
     console.log(`✅ Export job #${job.id} done — ${users.length} rows → ${filename}`);
 
-  } catch (err) {
+    QueueRegistry.decrement("excel-export", "active");
+    QueueRegistry.increment("excel-export", "completed");
+    ActivityLog.push("queue", `Export job #${job.id} completed — ${users.length} rows`, { queue: "excel-export", jobId: job.id, level: "success" });
+
+  } catch (err) { 
+    QueueRegistry.decrement("excel-export", "active");
+    QueueRegistry.increment("excel-export", "failed");
+    ActivityLog.push("queue", `Export job #${job.id} failed: ${err.message}`, { queue: "excel-export", jobId: job.id, level: "error" });
+
     console.error(`❌ Export job #${job.id} failed:`, err.message);
     await JobQueue.fail(job.id, err.message);
   }
 };
 
 // ── Poll loop ──────────────────────────────────────────
+
+// Also sync DB counts on each poll
+const syncQueueStats = async () => {
+  try {
+    const db = require("../config/db");
+    const [rows] = await db.query(
+      "SELECT status, COUNT(*) as count FROM export_jobs GROUP BY status"
+    );
+    const counts = { waiting: 0, active: 0, completed: 0, failed: 0 };
+    rows.forEach(r => { counts[r.status] = Number(r.count); });
+    QueueRegistry.sync("excel-export", counts);
+  } catch { /* ignore */ }
+};
+
 const startWorker = () => {
   console.log("🔧 Export worker started (MySQL queue)");
 
   const poll = async () => {
+    await syncQueueStats();
     try {
       const job = await JobQueue.claimNext();
       if (job) {
+        QueueRegistry.increment("excel-export", "waiting"); // will be decremented in processJob
         await processJob(job);
       }
     } catch (err) {
       console.error("Worker poll error:", err.message);
     } finally {
-      setTimeout(poll, POLL_INTERVAL);
+      setTimeout(poll, 3000);
     }
   };
 
-  poll(); // kick off immediately
+  poll();
 };
 
 module.exports = { startWorker };
