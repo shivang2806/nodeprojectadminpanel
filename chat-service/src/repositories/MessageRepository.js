@@ -1,23 +1,40 @@
 const db = require("../config/db");
 
-exports.create = async (data) => {
+exports.create = async ({ chat_id, sender_id, message }) => {
   const [result] = await db.query(
-    "INSERT INTO messages (chat_id, sender_id, message) VALUES (?,?,?)",
-    [data.chat_id, data.sender_id, data.message]
+    "INSERT INTO messages (chat_id, sender_id, message) VALUES (?, ?, ?)",
+    [chat_id, sender_id, message]
   );
 
   const [rows] = await db.query(
-    "SELECT * FROM messages WHERE id=?",
+    "SELECT * FROM messages WHERE id = ?",
     [result.insertId]
   );
 
-  return rows[0];
+  const row = rows[0];
+  return {
+    ...row,
+    id:        Number(row.id),
+    chat_id:   Number(row.chat_id),
+    sender_id: Number(row.sender_id),   // ← force Number
+  };
 };
 
 exports.findByChat = async (chatId) => {
   const [rows] = await db.query(
-    "SELECT * FROM messages WHERE chat_id=? ORDER BY created_at",
+    `SELECT m.*, u.name AS sender_name
+     FROM messages m
+     JOIN users u ON m.sender_id = u.id
+     WHERE m.chat_id = ?
+     ORDER BY m.created_at ASC`,
     [chatId]
   );
-  return rows;
+
+  // ← normalize all ids to Number
+  return rows.map(row => ({
+    ...row,
+    id:        Number(row.id),
+    chat_id:   Number(row.chat_id),
+    sender_id: Number(row.sender_id),
+  }));
 };

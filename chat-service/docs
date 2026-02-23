@@ -5,27 +5,20 @@ chat-service/
 │   ├── config/
 │   │   ├── db.js
 │   │   └── socket.js
-│   │
 │   ├── controllers/
 │   │   └── ChatController.js
-│   │
 │   ├── middlewares/
-│   │   └── socketAuth.js
-│   │
+│   │   └── authMiddleware.js       ← moved here (was inline in routes)
 │   ├── models/
-│   │   ├── Chat.js
-│   │   └── Message.js
-│   │
+│   │   ├── Chat.js                 ← SQL schema comments only
+│   │   └── Message.js             ← SQL schema comments only
 │   ├── repositories/
 │   │   ├── ChatRepository.js
 │   │   └── MessageRepository.js
-│   │
 │   ├── routes/
 │   │   └── chatRoutes.js
-│   │
 │   ├── app.js
 │   └── server.js
-│
 ├── .env
 └── package.json
 

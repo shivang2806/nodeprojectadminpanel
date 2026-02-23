@@ -5,11 +5,13 @@ class UserController {
 
   async dashboard(req, res) {
     res.json({
-      message: "Welcome",
-      name: req.user.name,
-      role: req.user.role,
+      id:    Number(req.user.id),   // ← CRITICAL: must be number
+      name:  req.user.name,
+      email: req.user.email,
+      role:  req.user.role,
     });
   }
+  
 
   async listUsers(req, res) {
     const users = await UserRepository.findAll();

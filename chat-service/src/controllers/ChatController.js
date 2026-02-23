@@ -1,4 +1,7 @@
-const ChatRepository = require("../repositories/ChatRepository");
+// ════════════════════════════════════════════════════════════════
+// src/controllers/ChatController.js
+// ════════════════════════════════════════════════════════════════
+const ChatRepository    = require("../repositories/ChatRepository");
 const MessageRepository = require("../repositories/MessageRepository");
 
 exports.myChats = async (req, res) => {
@@ -11,19 +14,26 @@ exports.myChats = async (req, res) => {
   }
 };
 
-
 exports.messages = async (req, res) => {
-  const messages = await MessageRepository.findByChat(req.params.chatId);
-  res.json(messages);
+  try {
+    const messages = await MessageRepository.findByChat(req.params.chatId);
+    res.json(messages);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to load messages" });
+  }
 };
 
 exports.startChat = async (req, res) => {
-  const { receiverId } = req.body;
+  try {
+    const { receiverId } = req.body;
+    if (!receiverId) return res.status(400).json({ message: "receiverId is required" });
+    if (receiverId === req.user.id) return res.status(400).json({ message: "Cannot chat with yourself" });
 
-  const chat = await ChatRepository.findOrCreateChat(
-    req.user.id,
-    receiverId
-  );
-
-  res.json(chat);
+    const chat = await ChatRepository.findOrCreate(req.user.id, receiverId);
+    res.json(chat);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to start chat" });
+  }
 };
