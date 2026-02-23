@@ -7,13 +7,11 @@
 -- rider mark as online to show under 2 km of range
 
 - node project 
--- show queue, scheduler in web live stream
 -- frontend Vue.js
 
 
 - docker container based
 
 video calling & chat
-queue scheduler moniter
 online code editor
 Build an Online Code Compiler

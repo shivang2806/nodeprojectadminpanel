@@ -1,39 +1,63 @@
-backend/src/
-├── config/
-│   ├── database.js         ← Sequelize (unchanged)
-│   ├── db.js               ← mysql2 pool (unchanged)
-│   ├── backup.js           ← DB backup (unchanged)
-│   └── scheduler.js        ← cron scheduler (unchanged)
+backend/
 │
-├── queues/
-│   └── JobQueue.js         ← MySQL queue class (NEW)
+├── src/
+│   │
+│   ├── config/
+│   │   ├── database.js          ← Sequelize ORM instance (MySQL)
+│   │   ├── db.js                ← mysql2 raw pool (for raw SQL queries)
+│   │   ├── multer.js            ← File upload config (uploadExcel, uploadDocs)
+│   │   ├── backup.js            ← runBackup(), cleanOldBackups(), listBackups()
+│   │   └── scheduler.js         ← node-cron jobs (backup, cleanup, health-check)
+│   │
+│   ├── models/
+│   │   └── User.js              ← Sequelize User model (id, name, email, password, role)
+│   │
+│   ├── repositories/
+│   │   └── UserRepository.js    ← findByEmail, findById, findAll, create, update, delete
+│   │
+│   ├── middlewares/
+│   │   ├── authMiddleware.js    ← JWT verify (header + query param for SSE)
+│   │   └── roleMiddleware.js    ← Role-based access (admin / customer / caption)
+│   │
+│   ├── controllers/
+│   │   ├── AuthController.js        ← login → returns { token, role, user }
+│   │   ├── UserController.js        ← dashboard, listUsers, createUser, updateUser, deleteUser, chatListUsers
+│   │   ├── UserExcelController.js   ← exportUsers, exportStatus, downloadExport, listJobs, importUsers, downloadTemplate
+│   │   ├── BackupController.js      ← list, create, download, remove, clean
+│   │   ├── PdfController.js         ← fromHtml, fromUrl, usersReport
+│   │   ├── DocsToPdfController.js   ← convertToPdf, supportedTypes
+│   │   └── MonitorController.js     ← stats, stream (SSE), addTestJob, clearLogs
+│   │
+│   ├── queues/
+│   │   └── JobQueue.js          ← MySQL-based queue (add, claimNext, setProgress, complete, fail, getById, listByUser, cleanOld)
+│   │
+│   ├── workers/
+│   │   └── exportWorker.js      ← polls MySQL every 3s, processes Excel export jobs
+│   │
+│   ├── monitor/
+│   │   ├── SchedulerRegistry.js ← register/tick/setNextRun for all cron jobs
+│   │   ├── QueueRegistry.js     ← live queue stats (sync from DB)
+│   │   └── ActivityLog.js       ← rolling in-memory log (last 100 entries)
+│   │
+│   ├── routes/
+│   │   ├── authRoutes.js        ← POST /api/auth/login
+│   │   ├── userRoutes.js        ← /api/user/*
+│   │   ├── backupRoutes.js      ← /api/backup/*
+│   │   ├── pdfRoutes.js         ← /api/pdf/*
+│   │   ├── docsRoutes.js        ← /api/docs/*
+│   │   └── monitorRoutes.js     ← /api/monitor/*
+│   │
+│   ├── app.js                   ← Express app (cors, json, all routes registered)
+│   └── server.js                ← Entry point (sequelize.sync, startWorker, startScheduler, listen)
 │
-├── workers/
-│   └── exportWorker.js     ← polls MySQL, processes jobs (NEW)
+├── backups/                     ← Generated DB backup .zip files
+├── exports/                     ← Generated Excel export .xlsx files
+├── pdfs/                        ← Generated PDF files
+├── uploads/                     ← Temp uploaded files (auto-deleted after use)
 │
-├── controllers/
-│   ├── AuthController.js
-│   ├── UserController.js
-│   ├── UserExcelController.js   ← updated (queue-based export)
-│   └── BackupController.js
-│
-├── routes/
-│   ├── authRoutes.js
-│   ├── userRoutes.js            ← 4 new export routes
-│   └── backupRoutes.js
-│
-├── middlewares/
-│   ├── authMiddleware.js
-│   └── roleMiddleware.js
-│
-├── models/
-│   └── User.js
-│
-├── repositories/
-│   └── UserRepository.js
-│
-├── app.js
-└── server.js
+├── .env
+├── .gitignore                   ← backups/ exports/ pdfs/ uploads/ node_modules/
+└── package.json
 
 exports/          ← generated Excel files stored here
 backups/          ← DB backups stored here
