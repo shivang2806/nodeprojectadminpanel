@@ -23,6 +23,7 @@
       { to: "/admin/dashboard",     icon: "bi bi-speedometer2",       label: "Dashboard" },
       { to: "/admin/users",         icon: "bi bi-people",             label: "Users",           badge: null },
       { to: "/admin/users/excel",   icon: "bi bi-file-earmark-excel", label: "Import / Export" },
+      { to: "/admin/pdf",          icon: "bi bi-file-earmark-pdf",     label: "PDF Generator"   },
       { to: "/admin/chat",          icon: "bi bi-chat-dots",          label: "Chats",           badge: null },
       { to: "/admin/backup",        icon: "bi bi-database",           label: "DB Backup" },
     ],
