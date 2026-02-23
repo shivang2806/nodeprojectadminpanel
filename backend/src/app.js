@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
 
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -11,5 +12,7 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+
+if (!fs.existsSync("uploads")) fs.mkdirSync("uploads");
 
 module.exports = app;

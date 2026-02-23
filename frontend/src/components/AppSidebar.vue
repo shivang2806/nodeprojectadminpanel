@@ -20,9 +20,10 @@
   <script>
   const MENUS = {
     admin: [
-      { to: "/admin/dashboard", icon: "bi bi-speedometer2", label: "Dashboard" },
-      { to: "/admin/users",     icon: "bi bi-people",       label: "Users",    badge: null },
-      { to: "/admin/chat",      icon: "bi bi-chat-dots",    label: "Chats",    badge: null },
+      { to: "/admin/dashboard",     icon: "bi bi-speedometer2",       label: "Dashboard" },
+      { to: "/admin/users",         icon: "bi bi-people",             label: "Users",           badge: null },
+      { to: "/admin/users/excel",   icon: "bi bi-file-earmark-excel", label: "Import / Export" },
+      { to: "/admin/chat",          icon: "bi bi-chat-dots",          label: "Chats",           badge: null },
     ],
     customer: [
       { to: "/customer/dashboard", icon: "bi bi-house",     label: "Dashboard" },

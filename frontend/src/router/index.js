@@ -2,12 +2,13 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { roleGuard } from "./guards";
 
-import Login           from "../views/Login.vue";
-import AdminDashboard  from "../views/admin/Dashboard.vue";
-import AdminUsers      from "../views/admin/Users.vue";
-import CaptionDashboard from "../views/caption/Dashboard.vue";
-import CustomerDashboard from "../views/customer/Dashboard.vue";
-import Chat            from "../views/Chat.vue";
+import Login              from "../views/Login.vue";
+import AdminDashboard     from "../views/admin/Dashboard.vue";
+import AdminUsers         from "../views/admin/Users.vue";
+import CaptionDashboard   from "../views/caption/Dashboard.vue";
+import CustomerDashboard  from "../views/customer/Dashboard.vue";
+import Chat               from "../views/Chat.vue";
+import UserExcel          from "../views/admin/UserExcel.vue";
 
 const routes = [
   { path: "/",                    component: Login },
@@ -27,6 +28,9 @@ const routes = [
 
   // Catch-all
   { path: "/:pathMatch(.*)*",     redirect: "/" },
+
+  { path: "/admin/users/excel", component: UserExcel, beforeEnter: roleGuard(["admin"]) },
+
 ];
 
 export default createRouter({ history: createWebHistory(), routes });
